@@ -24,7 +24,7 @@ export interface HandleCardPaymentOptions {
 export function isHandleCardPaymentOptions(
   handleCardPaymentOptions: any
 ): handleCardPaymentOptions is HandleCardPaymentOptions {
-  return 'type' in handleCardPaymentOptions;
+  return handleCardPaymentOptions && 'type' in handleCardPaymentOptions;
 }
 
 export interface ConfirmPaymentIntentOptions extends HandleCardPaymentOptions {

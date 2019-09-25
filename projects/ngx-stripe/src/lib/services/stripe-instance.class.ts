@@ -146,7 +146,7 @@ export class StripeInstance implements StripeServiceInterface {
 
   public handleCardPayment(
     a: string,
-    b: Element | HandleCardPaymentOptions,
+    b?: Element | HandleCardPaymentOptions | undefined,
     c?: HandleCardPaymentOptions | undefined
   ): Observable<PaymentIntentResult> {
     return this.stripe$.asObservable().pipe(
@@ -154,17 +154,26 @@ export class StripeInstance implements StripeServiceInterface {
       switchMap(s => {
         const stripe = s as StripeJS;
 
-        if (isHandleCardPaymentOptions(b)) {
+        if (isHandleCardPaymentOptions(c)) {
           return from(
-            stripe.handleCardPayment(a as string, b as HandleCardPaymentOptions)
+            stripe.handleCardPayment(
+              a as string,
+              b as Element,
+              c as HandleCardPaymentOptions | undefined
+            )
+          );
+        } else if (isHandleCardPaymentOptions(b)) {
+          return from(
+            stripe.handleCardPayment(
+              a as string,
+              b as HandleCardPaymentOptions
+              )
           );
         }
 
         return from(
           stripe.handleCardPayment(
-            a as string,
-            b as Element,
-            c as HandleCardPaymentOptions | undefined
+            a as string
           )
         );
       })
